@@ -11,7 +11,10 @@ services:
             - '8081:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
-            LARAVEL_SAIL: 1
+            - LARAVEL_SAIL=1
+            - SERVICE_FQDN_APPPANEL
+        healthcheck:
+            test: ["NONE"]
         volumes:
             - '.:/var/www/html'
         networks:
@@ -24,11 +27,11 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-secret}'
             MYSQL_ROOT_HOST: "%"
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE:-panel}'
+            MYSQL_USER: '${DB_USERNAME:-panel}'
+            MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - 'panel-mysql:/var/lib/mysql'
