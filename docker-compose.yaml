@@ -11,8 +11,12 @@ services:
             - '8081:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
-            - LARAVEL_SAIL=1
+            - APP_NAME=Autodonate
+            - APP_ENV=local
+            - APP_KEY=base64:N0R4HDPKZEgNY2LqSrkChWFqF5SWggCAITxs6qozsdY=
             - SERVICE_FQDN_APPPANEL
+            - SERVICE_URL_APPPANEL
+            - APP_URL=$SERVICE_FQDN_APPPANEL
         healthcheck:
             test: ["NONE"]
         volumes:
@@ -27,12 +31,12 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: 'secret'
-            MYSQL_ROOT_HOST: "%"
-            MYSQL_DATABASE: 'panel'
-            MYSQL_USER: 'panel'
-            MYSQL_PASSWORD: 'secret'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 0
+           - MYSQL_ROOT_PASSWORD=$SERVICE_PASSWORD_APPPANEL
+           - MYSQL_ROOT_HOST=%
+           - MYSQL_DATABASE=$SERVICE_USER_APPPANEL
+           - MYSQL_USER=$SERVICE_USER_APPPANEL
+           - MYSQL_PASSWORD=$SERVICE_PASSWORD_APPPANEL
+           - MYSQL_ALLOW_EMPTY_PASSWORD=0
         volumes:
             - 'panel-mysql:/var/lib/mysql'
         networks:
